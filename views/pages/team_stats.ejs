@@ -1,0 +1,88 @@
+<% include ../partials/header %>
+<% include ../partials/menu %>
+	<div class="container">
+		<br>
+		<div class="jumbotron">
+		  <h1 class="display-4">Fall 2018 Stats</h1>
+		  <p class="lead">Detailed information on how the Buffs are doing in the 2018 Football Season!</p>
+		</div>
+		
+		<table class="table table-bordered" id="stats_table">
+			<tr>
+				<th class="align-bottom" rowspan="2">Game Date</th>
+				<th class="align-bottom"rowspan="2">Opposing Team Name</th>
+				<th class="text-center" colspan="2">Score</th>
+				<th class="align-bottom" rowspan="2">Winner</th>
+			</tr>
+			<tr>
+				<th>Home Score</th>
+				<th>Opp. Score</th>
+			</tr>
+			<!-- TODO: Iterate over the Football_table data here 
+						1. Display the information for each row (date, name, home score, visitor score)
+						2. Determine who the winner is and display it in the final column
+
+						If you're not sure how the logic should work here, review the code you add to the client-side javascript
+						that ran onload for Lab 5.  We are doing the same kind of operations we had in Lab 5, but we are instead having
+						everything handled via server-side scriptes
+			-->
+			<%	
+				if(data)
+				{
+					display_script='';
+					data.forEach(function(item)
+					{
+						var h_score=parseInt(item.home_score);
+						var v_score=parseInt(item.visitor_score);
+						if (h_score > v_score)
+						{
+							winner = "Colorado";
+						}
+						if (v_score > h_score)
+						{
+							winner = item.visitor_name;
+						}
+						display_script+= '<tr> <td>' + item.game_date + '</td> <td>' + item.visitor_name + '</td> <td>' + item.home_score + '</td> <td> ' + item.visitor_score + '</td><td>' + winner + ' </td> </tr>';
+					}); %>
+					<%- display_script %>
+			<%	} %>
+			
+		</table>
+		<br>
+		<table class="table text-center">
+			<tr>
+				<th>Wins</th>
+				<th>Losses</th>
+			</tr>
+			<tr>
+				
+			<%	
+				if(data)
+				{
+					var win=0;
+					var losses=0;
+					var printWL = '';
+					data.forEach(function(item)
+					{
+						var h_score=parseInt(item.home_score);
+						var v_score=parseInt(item.visitor_score);
+						if (h_score > v_score)
+						{
+							win=win+1;
+						}
+						if (v_score > h_score)
+						{
+							losses=losses+1;
+						}
+					});
+
+				printWL = '<td>'+win+'</td> <td>'+losses+'</td>';
+			%>
+
+					<%- printWL %>
+			<%	} %>
+			</tr>
+		</table>
+		
+	</div>
+<% include ../partials/footer %>
